@@ -15,6 +15,19 @@
     <div id="app">
         <input type="text" name="name" v-model="name" placeholder="Ingresa tu nombre">
         <p>Tu nombre en masyúscula es: {{ name | uppercase}}</p>
+
+        <form @submit.prevent="submit" action="">
+            <h2>¿Cuáles son tus cursos favoritos?</h2>
+            <input type="checkbox" v-model="courses" id="vue" value="vue">
+            <label for="vue">Curso de Vue.js</label>
+            <input type="checkbox" v-model="courses" id="seo" value="seo">
+            <label for="seo">Curso de SEO</label>
+            <input type="checkbox" v-model="courses" id="react" value="react">
+            <label for="react">Curso de React y Redux</label>
+            <input type="checkbox" v-model="courses" id="growth" value="growth">
+            <label for="growth">Curso de Growth Marketing</label>
+            <button type="submit">Enviar</button>
+        </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -22,15 +35,13 @@
         let app = new Vue({
             el: '#app',
             data: {
-                name: ""
+                name: "",
+                courses: [],
             },
             methods:{
-                more: function(){
-                    this.count++;
+                submit: function(){
+                    console.log(this.courses);
                 },
-                less: function(){
-                    this.count--;
-                }
             },
             filters:{
                 uppercase: function(str){
