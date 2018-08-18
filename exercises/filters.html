@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Conditions</title>
+    <title>Filters</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16x16.png">
@@ -13,10 +13,8 @@
 <body>
 
     <div id="app">
-        <template v-if="show">
-            <p>Hola {{name}}</p>
-            <a :href="pagine.url" target="_blank">{{pagine.name}}</a>
-        </template>
+        <p>{{ title | uppercase }}</p>
+        <p>{{ subtitle | lowercase }}</p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -24,11 +22,15 @@
         let app = new Vue({
             el: '#app',
             data: {
-                show: true,
-                name: 'Raúl',
-                pagine: {
-                    name: 'Ir a google',
-                    url: 'https://www.google.com'
+                title: 'Raúl',
+                subtitle: 'Anaya Rojo'
+            },
+            filters:{
+                uppercase: function(str){
+                    return str.toUpperCase();
+                },
+                lowercase: function(str){
+                    return str.toLowerCase();
                 }
             }
         });
