@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Components</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16x16.png">
+</head>
+
+<body>
+
+    <div id="app">
+        <form @submit.prevent="submit" action="">
+            <h2>¿Cuáles son tus cursos favoritos?</h2>
+            <template v-for="course in courses">
+                <course :course="course" @checked="selectCourse"></course>
+            </template>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="text/javascript">
+
+        Vue.component('course', {
+            props: ['course'],
+            methods: {
+                onchange: function(event){
+                    this.$emit('checked', this.course, event.target.checked);
+                }
+            },
+            template: 
+            `<div class="course">
+                <input type="checkbox" :id="course.value" :value="course.value" @change="onchange">
+                <label :for="course.value">{{course.name}}</label>
+            </div>`
+        });
+
+        let app = new Vue({
+            el: '#app',
+            data: {
+                selectedCourses: [],
+                courses: [
+                    {name: 'Curso de Vue.js', value: 'vue'},
+                    {name: 'Curso de SEO', value: 'seo'},
+                    {name: 'Curso de React y Redux', value: 'react'},
+                    {name: 'Curso de Growth Marketing', value: 'growth'},
+                ],
+            },
+            methods:{
+                submit: function(){
+                    console.log(this.selectedCourses);
+                },
+                selectCourse: function(course, checked){
+                    if(checked){
+                        this.selectedCourses.push(course);
+                    } else {
+                        let index = this.selectedCourses.indexOf(course);
+                        this.selectedCourses.splice(index, 1);
+                    }
+                    this.submit();
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
