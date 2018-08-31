@@ -2,8 +2,10 @@
   #app
     img(src='./assets/logo.png')
     h1 Anaya Rojo Music
+    select(v-model="selectedCountry")
+      option(v-for="country in countries" :value="country.value") {{ country.name }}
     ul
-      artist(v-for="artist in artists" v-bind:artist="artist")
+      artist(v-for="artist in artists" :artist="artist" :key="artist.mbid")
 </template>
 
 <script>
@@ -15,17 +17,34 @@ export default {
   name: 'app',
   data () {
     return {
-      artists: []
+      artists: [],
+      countries: [
+        { name: 'Argentina', value: 'argentina'},
+        { name: 'Colombia', value: 'colombia'},
+        { name: 'Mexico', value: 'mexico'},
+        { name: 'España', value: 'spain'},
+      ],
+      selectedCountry: 'argentina',
     }
   },
   components: {
     Artist: Artist
   },
+  methods:{
+    refreshArtists: function(){
+      const _this = this;
+      getTopArtists(this.selectedCountry).then(function(artists){
+        _this.artists = artists;
+      });
+    }
+  },
   mounted: function(){
-    const _this = this;
-    getTopArtists().then(function(artists){
-      _this.artists = artists;
-    });
+    this.refreshArtists();
+  },
+  watch: {
+    selectedCountry: function(){
+        this.refreshArtists();
+    }
   }
 }
 </script>
