@@ -4,19 +4,22 @@
     h1 Anaya Rojo Music
     select(v-model="selectedCountry")
       option(v-for="country in countries" :value="country.value") {{ country.name }}
+    spinner(v-show="loading")
     ul
       artist(v-for="artist in artists" :artist="artist" :key="artist.mbid")
 </template>
 
 <script>
 
-import Artist from './components/Artist'
-import getTopArtists from './api'
+import Artist from './components/Artist';
+import Spinner from './components/Spinner';
+import getTopArtists from './api';
 
 export default {
   name: 'app',
   data () {
     return {
+      loading: true,
       artists: [],
       countries: [
         { name: 'Argentina', value: 'argentina'},
@@ -28,13 +31,17 @@ export default {
     }
   },
   components: {
-    Artist: Artist
+    Artist: Artist,
+    Spinner: Spinner,
   },
   methods:{
     refreshArtists: function(){
       const _this = this;
+      this.loading = true;
+      this.artists = [];
       getTopArtists(this.selectedCountry).then(function(artists){
         _this.artists = artists;
+        _this.loading = false;
       });
     }
   },
